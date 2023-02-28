@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World</title>
+    <style>
+        body {
+            font-family: arial;
+            font-size: 14px;
+        }
+
+        .liveExample {
+            padding: 1em;
+            background-color: #EEEEDD;
+            border: 1px solid #CCC;
+            max-width: 655px;
+        }
+
+        .liveExample input {
+            font-family: Arial;
+        }
+
+        .liveExample b {
+            font-weight: bold;
+        }
+
+        .liveExample p {
+            margin-top: 0.9em;
+            margin-bottom: 0.9em;
+        }
+
+        .liveExample select[multiple] {
+            width: 100%;
+            height: 8em;
+        }
+
+        .liveExample h2 {
+            margin-top: 0.4em;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+    </style>
+    <script type='text/javascript' src='./knockout-3.5.1.js'></script>
+</head>
+
+<body>
+    <div class='liveExample'>
+        <p>First name: <input data-bind='value: firstName' /></p>
+        <p>Last name: <input data-bind='value: lastName' /></p>
+        <!-- (1) -->
+        <!-- <h2>Hello, <span data-bind='text: fullName'> </span>!</h2> -->
+        <!-- (1) -->
+
+        <!-- (2) -->
+        <h2>Hello, <span data-bind='text: fullName()'> </span>!</h2>
+        <!-- (2) -->
+    </div>
+    <script>
+        // Here's my data model
+        var ViewModel = function (first, last) {
+            this.firstName = ko.observable(first);
+            this.lastName = ko.observable(last);
+
+            // this.fullName = ko.computed(function () {            // (1)
+            //     // Knockout tracks dependencies automatically. It knows that fullName depends on firstName and lastName,
+            //     // because these get called when evaluating fullName.
+            //     return this.firstName() + " " + this.lastName();
+            // }, this);
+
+            this.fullName = function () { // (2)
+                // Knockout tracks dependencies automatically. It knows that fullName depends on firstName and lastName,
+                // because these get called when evaluating fullName.
+                return this.firstName() + " " + this.lastName();
+            };
+
+
+            // Đăng ký rõ ràng để quan sát (Explicitly subscribing to observables)
+            // this.firstName.subscribe(function (newValue) {
+            //     alert("The firstName's new name is " + newValue);
+            // });
+        };
+
+        ko.applyBindings(new ViewModel("Planet", "Earth")); // This makes Knockout get to work
+    </script>
+</body>
+
+</html>
